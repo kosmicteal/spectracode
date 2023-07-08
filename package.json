@@ -4,7 +4,7 @@
   "publisher": "KosmicTeal",
   "description": "Color-pick your accent to identify workspaces.",
   "license": "MPL-2.0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -21,8 +21,9 @@
   "keywords": ["color","skin","window","organize","notifications"],
   "galleryBanner": {
     "color": "#333333",
-    "theme": "light"
+    "theme": "dark"
   },
+  "pricing": "Free",
   "repository": {
     "type": "git",
     "url": "https://github.com/kosmicteal/spectracode"
