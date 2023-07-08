@@ -4,7 +4,7 @@
   "publisher": "KosmicTeal",
   "description": "Color-pick your accent to identify workspaces.",
   "license": "MPL-2.0",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -14,7 +14,6 @@
 	],
 	"categories": [
 		"Themes",
-    "Extension Packs",
     "Other"
 	],
   "icon": "img/logo.png",
