@@ -7,22 +7,43 @@ export function activate(context: vscode.ExtensionContext) {
 	const provider = new SpectraCodeProvider(context.extensionUri);
 
 	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(SpectraCodeProvider.viewType, provider)
+		vscode.window.registerWebviewViewProvider(SpectraCodeProvider.viewType, provider, { webviewOptions: { retainContextWhenHidden: true } })
 	);
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('spectraCode.clearColor', () => {
-			vscode.window.showInformationMessage("Cleared workbench's custom colors");
+			// vscode.window.showInformationMessage("Cleared workbench's custom colors");
+			updateColorScheme(null, null);
+		}));
 
-			const configuration = vscode.workspace.getConfiguration('workbench');
-			//get settings for workbench where colorCustomizations is present
+	context.subscriptions.push(
+		vscode.commands.registerCommand('spectraCode.sendTestNotification', () => {
+			vscode.window.showInformationMessage("This is a notification to test out Spectracode. You can clear this one!");
+		}));
 
-			configuration.update('colorCustomizations', {
-				"activityBar.background": null, "notifications.background": null,
-				"activityBar.inactiveForeground": null, "activityBar.foreground": null, "notifications.foreground": null
+	context.subscriptions.push(
+		vscode.commands.registerCommand('spectraCode.hexColor', async () => {
+			let valid = false;
+			let manualHexCodeInput = await vscode.window.showInputBox({
+				placeHolder: 'Insert your custom HEX colour',
+				validateInput: text => {
+					if (validateHEX(text)) {
+						return null
+					} else {
+						return 'This is not a valid color!'
+					}
+				}
 			});
+			if (manualHexCodeInput !== 'undefined' && manualHexCodeInput !== '') {
+				if (manualHexCodeInput?.charAt(0) !== '#') {
+					manualHexCodeInput = '#' + manualHexCodeInput;
+				}
+				provider.getIconColor(manualHexCodeInput!);
+			}
+
 		}));
 }
+
 
 class SpectraCodeProvider implements vscode.WebviewViewProvider {
 
@@ -33,6 +54,14 @@ class SpectraCodeProvider implements vscode.WebviewViewProvider {
 	constructor(
 		private readonly _extensionUri: vscode.Uri,
 	) { }
+
+	public getIconColor(stringInput: string) {
+		if (this._view) {
+			this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
+			this._view.webview.postMessage({ type: 'getIconColor', color: stringInput });
+		}
+	}
+
 
 	public resolveWebviewView(
 		webviewView: vscode.WebviewView,
@@ -53,18 +82,11 @@ class SpectraCodeProvider implements vscode.WebviewViewProvider {
 		webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
 		webviewView.webview.onDidReceiveMessage(message => {
-			vscode.window.showInformationMessage(message.text);
-
-			const configuration = vscode.workspace.getConfiguration('workbench');
-			//get settings for workbench where colorCustomizations is present
-
-			configuration.update('colorCustomizations', {
-				"activityBar.background": message.colorBackground, "notifications.background": message.colorBackground,
-				"activityBar.inactiveForeground": message.colorForeground + 'AA', "activityBar.foreground": message.colorForeground, "notifications.foreground": message.colorForeground
-			});
-
+			// vscode.window.showInformationMessage(message.text);
+			updateColorScheme(message.colorBackground, message.colorForeground);
 			return;
 		});
+
 	}
 
 	private _getHtmlForWebview(webview: vscode.Webview) {
@@ -105,6 +127,40 @@ class SpectraCodeProvider implements vscode.WebviewViewProvider {
 			</body>
 			</html>`;
 	}
+}
+
+function updateColorScheme(backgroundColor: string | null, foregroundColor: string | null) {
+	//get settings for workbench where colorCustomizations is present
+	const configuration = vscode.workspace.getConfiguration('workbench');
+
+	// get opacity color when foreground is valid
+	let foregroundColorOpacity = null
+	if (foregroundColor !== null){
+		foregroundColorOpacity = foregroundColor + 'AA'
+	}
+
+	configuration.update('colorCustomizations', {
+		"activityBar.background": backgroundColor, "notifications.background": backgroundColor,
+		"activityBar.inactiveForeground": foregroundColorOpacity, "activityBar.foreground": foregroundColor, "notifications.foreground": foregroundColor
+	});
+}
+
+function validateHEX(text: string) {
+	let valid = true;
+	if ((!text.includes('#') && text.length == 6) || (text.includes('#') && text.length == 7)) {
+		const notValidCharacters = 'GHIJKLMNOPQRSTUVWXYZ';
+		let iterator = 0;
+		while (iterator < notValidCharacters.length - 1 && valid) {
+			if (text.includes(notValidCharacters.charAt(iterator))) {
+				valid = false;
+			}
+			iterator++;
+		}
+	} else {
+		valid = false;
+	}
+	console.log(valid)
+	return valid;
 }
 
 function getNonce() {

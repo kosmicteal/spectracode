@@ -1901,20 +1901,37 @@ let colorPicker = new iro.ColorPicker("#picker", {
 function resizeColorPicker() {
 	let currentWidth = document.documentElement.clientWidth;
 	let currentHeight = document.documentElement.clientHeight;
-
+	
 	colorPicker.resize(currentWidth - 40, currentHeight - 60);
 }
-resizeColorPicker();
+
 new ResizeObserver(resizeColorPicker).observe(document.documentElement);
+
 // change colour once mouse is up
 function colorChangeCallback(color) {
 	var background = colorPicker.color.hexString;
 	let foreground = getTextColor(background);
 	console.log(background);
 	vscode.postMessage({
-		text: 'Background colours changed to ' + background,
+		// text: 'Background colours changed to ' + background,
 		colorBackground: background,
 		colorForeground: foreground,
 	});
 }
 colorPicker.on("input:end", colorChangeCallback);
+
+window.addEventListener('message', event => {
+	const message = event.data; // The json data that the extension sent
+	switch (message.type) {
+		case 'getIconColor':
+			{
+				let returnColor = getTextColor(message.color);
+				vscode.postMessage({
+					// text: 'Background colours changed to ' + background,
+					colorBackground: message.color,
+					colorForeground: returnColor,
+				});
+				break;
+			}
+	}
+});

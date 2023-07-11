@@ -18,6 +18,9 @@ This is also my first time trying to do a VSCode plugin so it may be a bit wonki
   * Due to how VSCode refreshes its Webview contents, change the width of the Primary Side Bar to properly update the size of the color picker.
 
 ## Release Notes
+### 1.1.0
+Fixed color picker collapsing itself when hiding the view.
+Added a manual HEX value and a manual Notification Test check instead of putting continuous notifications.
 ### 1.0.2
 Updated VSCode Extension Groups, Readme and Changelog
 ### 1.0.1

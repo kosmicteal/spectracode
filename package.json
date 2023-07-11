@@ -4,7 +4,7 @@
   "publisher": "KosmicTeal",
   "description": "Color-pick your accent to identify workspaces.",
   "license": "MPL-2.0",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -48,13 +48,36 @@
 				"category": "SpectraCode",
 				"title": "Clear Custom Color",
 				"icon": "$(discard)"
+			},
+      {
+				"command": "spectraCode.sendTestNotification",
+				"category": "SpectraCode",
+				"title": "Send Color Test Notification",
+        "icon": "$(beaker)"
+			},
+      {
+				"command": "spectraCode.hexColor",
+				"category": "SpectraCode",
+				"title": "Input HEX color manually",
+        "icon": "$(symbol-color)"
 			}
 		],
 		"menus": {
 			"view/title": [
 				{
 					"command": "spectraCode.clearColor",
-					"group": "navigation"
+					"group": "navigation",
+          "when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView "
+				},
+        {
+					"command": "spectraCode.sendTestNotification",
+					"group": "navigation",
+          "when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView"
+				},
+        {
+					"command": "spectraCode.hexColor",
+					"group": "navigation",
+          "when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView"
 				}
 			]
 		}
