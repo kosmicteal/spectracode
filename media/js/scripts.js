@@ -1925,6 +1925,7 @@ window.addEventListener('message', event => {
 	switch (message.type) {
 		case 'getIconColor':
 			{
+				colorPicker.color.hexString = message.color
 				let returnColor = getTextColor(message.color);
 				vscode.postMessage({
 					// text: 'Background colours changed to ' + background,
