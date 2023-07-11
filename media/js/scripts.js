@@ -1845,31 +1845,31 @@
 function getRGB(c) {
 	return parseInt(c, 16) || c
 }
-  
+
 function getsRGB(c) {
 	return getRGB(c) / 255 <= 0.03928
-	  ? getRGB(c) / 255 / 12.92
-	  : Math.pow((getRGB(c) / 255 + 0.055) / 1.055, 2.4)
+		? getRGB(c) / 255 / 12.92
+		: Math.pow((getRGB(c) / 255 + 0.055) / 1.055, 2.4)
 }
-  
+
 function getLuminance(hexColor) {
 	return (
-	  0.2126 * getsRGB(hexColor.substr(1, 2)) +
-	  0.7152 * getsRGB(hexColor.substr(3, 2)) +
-	  0.0722 * getsRGB(hexColor.substr(-2))
+		0.2126 * getsRGB(hexColor.substr(1, 2)) +
+		0.7152 * getsRGB(hexColor.substr(3, 2)) +
+		0.0722 * getsRGB(hexColor.substr(-2))
 	)
 }
-  
+
 function getContrast(f, b) {
 	const L1 = getLuminance(f)
 	const L2 = getLuminance(b)
 	return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05)
 }
-  
+
 function getTextColor(bgColor) {
 	const whiteContrast = getContrast(bgColor, '#d7d7d7')
 	const blackContrast = getContrast(bgColor, '#181818')
-  
+
 	return whiteContrast > blackContrast ? '#d7d7d7' : '#181818'
 }
 // //////////////////////////////////////////////////////////////////////////////// //
@@ -1901,7 +1901,7 @@ let colorPicker = new iro.ColorPicker("#picker", {
 function resizeColorPicker() {
 	let currentWidth = document.documentElement.clientWidth;
 	let currentHeight = document.documentElement.clientHeight;
-	
+
 	colorPicker.resize(currentWidth - 40, currentHeight - 60);
 }
 
@@ -1911,13 +1911,13 @@ new ResizeObserver(resizeColorPicker).observe(document.documentElement);
 function colorChangeCallback(color) {
 	var background = colorPicker.color.hexString;
 	let foreground = getTextColor(background);
-	console.log(background);
 	vscode.postMessage({
 		// text: 'Background colours changed to ' + background,
 		colorBackground: background,
 		colorForeground: foreground,
 	});
 }
+
 colorPicker.on("input:end", colorChangeCallback);
 
 window.addEventListener('message', event => {

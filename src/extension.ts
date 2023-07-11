@@ -135,7 +135,7 @@ function updateColorScheme(backgroundColor: string | null, foregroundColor: stri
 
 	// get opacity color when foreground is valid
 	let foregroundColorOpacity = null
-	if (foregroundColor !== null){
+	if (foregroundColor !== null) {
 		foregroundColorOpacity = foregroundColor + 'AA'
 	}
 
@@ -159,7 +159,6 @@ function validateHEX(text: string) {
 	} else {
 		valid = false;
 	}
-	console.log(valid)
 	return valid;
 }
 
