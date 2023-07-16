@@ -1,38 +1,59 @@
 {
-  "name": "spectracode",
-  "displayName": "SpectraCode",
-  "publisher": "KosmicTeal",
-  "description": "Color-pick your accent to identify workspaces.",
-  "license": "MPL-2.0",
-  "version": "1.1.1",
-  "engines": {
-    "vscode": "^1.80.0"
-  },
-  "extensionKind": [
+	"name": "spectracode",
+	"displayName": "SpectraCode",
+	"publisher": "KosmicTeal",
+	"description": "Color-pick your accent to identify workspaces.",
+	"license": "MPL-2.0",
+	"version": "1.2.0",
+	"engines": {
+		"vscode": "^1.80.0"
+	},
+	"extensionKind": [
 		"ui",
 		"workspace"
 	],
 	"categories": [
 		"Themes",
-    "Other"
+		"Other"
 	],
-  "icon": "img/logo.png",
-  "keywords": ["color","skin","window","organize","notifications"],
-  "galleryBanner": {
-    "color": "#333333",
-    "theme": "dark"
-  },
-  "pricing": "Free",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kosmicteal/spectracode"
-  },
-  "bugs": {
-    "url": "https://github.com/kosmicteal/spectracode/issues"
-  },
-  "activationEvents": [],
-  "main": "./out/extension.js",
-  "contributes": {
+	"icon": "img/logo.png",
+	"keywords": [
+		"color",
+		"skin",
+		"window",
+		"organize",
+		"notifications"
+	],
+	"galleryBanner": {
+		"color": "#333333",
+		"theme": "dark"
+	},
+	"pricing": "Free",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kosmicteal/spectracode"
+	},
+	"bugs": {
+		"url": "https://github.com/kosmicteal/spectracode/issues"
+	},
+	"activationEvents": [],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "SpectraCode",
+			"properties": {
+				"spectraCode.commandPaletteChange": {
+					"type": "boolean",
+					"default": false,
+					"description": "Change the colour of the Command Palette when updating the color scheme."
+				},
+				"spectraCode.menuBarChange": {
+					"type": "boolean",
+					"default": false,
+					"description": "Change the colour of the Menu Bar when updating the color scheme."
+				}
+			}
+		},
 		"views": {
 			"explorer": [
 				{
@@ -49,58 +70,116 @@
 				"title": "Clear Custom Color",
 				"icon": "$(discard)"
 			},
-      {
+			{
 				"command": "spectraCode.sendTestNotification",
 				"category": "SpectraCode",
 				"title": "Send Color Test Notification",
-        "icon": "$(beaker)"
+				"icon": "$(beaker)"
 			},
-      {
+			{
 				"command": "spectraCode.hexColor",
 				"category": "SpectraCode",
 				"title": "Input HEX color manually",
-        "icon": "$(symbol-color)"
+				"icon": "$(symbol-color)"
+			},
+			{
+				"command": "spectraCode.changeCommandPaletteChecked",
+				"category": "SpectraCode",
+				"title": "☑️ Change Command Palette"
+			},
+			{
+				"command": "spectraCode.changeCommandPaletteUnchecked",
+				"category": "SpectraCode",
+				"title": "◼️ Change Command Palette"
+			},
+			{
+				"command": "spectraCode.changeMenuBarChecked",
+				"category": "SpectraCode",
+				"title": "☑️ Change Menu Bar"
+			},
+			{
+				"command": "spectraCode.changeMenuBarUnchecked",
+				"category": "SpectraCode",
+				"title": "◼️ Change Menu Bar"
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "spectraCode.changeCommandPaletteChecked",
+					"when": "false"
+				},
+				{
+					"command": "spectraCode.changeCommandPaletteUnchecked",
+					"when": "false"
+				},
+				{
+					"command": "spectraCode.changeMenuBarChecked",
+					"when": "false"
+				},
+				{
+					"command": "spectraCode.changeMenuBarUnchecked",
+					"when": "false"
+				}
+			],
 			"view/title": [
 				{
 					"command": "spectraCode.clearColor",
 					"group": "navigation",
-          "when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView "
+					"when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView "
 				},
-        {
+				{
 					"command": "spectraCode.sendTestNotification",
 					"group": "navigation",
-          "when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView"
+					"when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView"
 				},
-        {
+				{
 					"command": "spectraCode.hexColor",
 					"group": "navigation",
-          "when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView"
+					"when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView"
+				},
+				{
+					"command": "spectraCode.changeCommandPaletteChecked",
+					"group": "1_commandPalette",
+					"when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView && spectraCode:commandPaletteChange"
+				},
+				{
+					"command": "spectraCode.changeMenuBarChecked",
+					"group": "2_menuBar",
+					"when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView && spectraCode:menuBarChange"
+				},
+				{
+					"command": "spectraCode.changeCommandPaletteUnchecked",
+					"group": "1_commandPalette",
+					"when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView && !spectraCode:commandPaletteChange"
+				},
+				{
+					"command": "spectraCode.changeMenuBarUnchecked",
+					"group": "2_menuBar",
+					"when": "view.spectraCode.colorsView.visible && view == spectraCode.colorsView && !spectraCode:menuBarChange"
 				}
 			]
 		}
 	},
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.80.0",
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "20.2.5",
-    "@typescript-eslint/eslint-plugin": "^5.59.8",
-    "@typescript-eslint/parser": "^5.59.8",
-    "eslint": "^8.41.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.2.0",
-    "typescript": "^5.1.3",
-    "@vscode/test-electron": "^2.3.2"
-  }
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.80.0",
+		"@types/glob": "^8.1.0",
+		"@types/mocha": "^10.0.1",
+		"@types/node": "20.2.5",
+		"@typescript-eslint/eslint-plugin": "^5.59.8",
+		"@typescript-eslint/parser": "^5.59.8",
+		"eslint": "^8.41.0",
+		"glob": "^8.1.0",
+		"mocha": "^10.2.0",
+		"typescript": "^5.1.3",
+		"@vscode/test-electron": "^2.3.2"
+	}
 }

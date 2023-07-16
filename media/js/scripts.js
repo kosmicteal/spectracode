@@ -1878,6 +1878,31 @@ function getTextColor(bgColor) {
 /*
   SpectraCode functions
 */
+
+// color utilites, currently unused
+
+// function hexToRGB(hexColor) {
+// 	return {
+// 		r: parseInt(hexColor.substr(1, 2), 16) ,
+// 		g: parseInt(hexColor.substr(3, 2), 16) ,
+// 		b: parseInt(hexColor.substr(-2), 16)
+// 	}
+// }
+
+// function RGBtoHex(rgbObject){
+// 	return '#' + rgbObject.r.toString(16).padStart(2,'0') + rgbObject.g.toString(16).padStart(2,'0') + rgbObject.b.toString(16).padStart(2,'0')
+// }
+
+// function getSecondary(hexStringInput){
+// 	let rgbObject = hexToRGB(hexStringInput);
+
+// 	rgbObject.r = parseInt(rgbObject.r * 0.6);
+// 	rgbObject.g = parseInt(rgbObject.g * 0.6);
+// 	rgbObject.b = parseInt(rgbObject.b * 0.6);
+
+// 	return RGBtoHex(rgbObject);
+// }
+
 const vscode = acquireVsCodeApi();
 // first generation
 let currentWidth = document.documentElement.clientWidth;
@@ -1912,7 +1937,6 @@ function colorChangeCallback(color) {
 	var background = colorPicker.color.hexString;
 	let foreground = getTextColor(background);
 	vscode.postMessage({
-		// text: 'Background colours changed to ' + background,
 		colorBackground: background,
 		colorForeground: foreground,
 	});
@@ -1926,11 +1950,10 @@ window.addEventListener('message', event => {
 		case 'getIconColor':
 			{
 				colorPicker.color.hexString = message.color
-				let returnColor = getTextColor(message.color);
+				let foregroundResult = getTextColor(message.color);
 				vscode.postMessage({
-					// text: 'Background colours changed to ' + background,
 					colorBackground: message.color,
-					colorForeground: returnColor,
+					colorForeground: foregroundResult
 				});
 				break;
 			}
