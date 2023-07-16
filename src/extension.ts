@@ -176,7 +176,7 @@ function updateColorScheme(backgroundColor: string | null, foregroundColor: stri
 
 	// get inactive foreground color when foreground is valid
 	if (foregroundColor !== null) {
-		let foregroundColorInactive = foregroundColor + 'AA';
+		foregroundColorInactive = foregroundColor + 'AA';
 	}
 
 	// get secondary colors by changing the opacity
